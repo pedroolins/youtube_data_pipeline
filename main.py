@@ -128,7 +128,7 @@ def index():
             log.info(f"subiu tabela videos da playlist {playlist_name}")
             
             #subindo dados da tabela de comments
-            sobe_dados_bq(df_comments, tabela_destino='video_comments', mode='append')
+            sobe_dados_bq(df_comments, tabela_destino='video_comments', mode='replace')
             log.info(f"subiu tabela comments da playlist {playlist_name}")
 
             #subindo dados da tabela de stats
