@@ -134,16 +134,16 @@ def video_comments(video_id ='SecT4r0-BqE'):
         text = comments['snippet']['topLevelComment']['snippet']['textOriginal']
         dict_dados = {'video_id': video_id, 'author_img': author_img, 'author_name': author_name, 'like_counts': like_counts, 'text': text}
         lista_dados.append(dict_dados)
-        ## verifica se o comentário teve respostas
-        if comments['snippet']['totalReplyCount'] > 0:
-            for reply in comments['replies']['comments']:
-                video_id = reply['snippet']['videoId']
-                author_name = reply['snippet']['authorDisplayName']
-                author_img = reply['snippet']['authorProfileImageUrl']
-                like_counts = reply['snippet']['likeCount']
-                text = reply['snippet']['textOriginal']
-                dict_dados_reply = {'video_id': video_id, 'author_img': author_img, 'author_name': author_name, 'like_counts': like_counts, 'text': text}
-                lista_dados.append(dict_dados_reply)
+        ## verifica se o comentário teve respostas e pega as respostas dos comentários caso queira
+        # if comments['snippet']['totalReplyCount'] > 0:
+        #     for reply in comments['replies']['comments']:
+        #         video_id = reply['snippet']['videoId']
+        #         author_name = reply['snippet']['authorDisplayName']
+        #         author_img = reply['snippet']['authorProfileImageUrl']
+        #         like_counts = reply['snippet']['likeCount']
+        #         text = reply['snippet']['textOriginal']
+        #         dict_dados_reply = {'video_id': video_id, 'author_img': author_img, 'author_name': author_name, 'like_counts': like_counts, 'text': text}
+        #         lista_dados.append(dict_dados_reply)
     return lista_dados
 
 ## pega os comentários de uma lista de vídeos
