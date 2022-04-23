@@ -1,10 +1,8 @@
-from pickle import TRUE
 from src.pega_dados import pega_comments_videos, pega_dados_da_playlist, pega_stats_videos
 from src.pega_dados import pega_stats_channel, pega_tudo_playlist
-import pandas as pd
 from pytest import mark
-# type(pega_comments_videos()["video_id"])
-type(pega_tudo_playlist())
+import pandas as pd
+
 
 ## testando as funções iniciais do arquivo pega_dados.py e vendo se retornam um json
 @mark.dataframes
