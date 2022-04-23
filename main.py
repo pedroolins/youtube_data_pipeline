@@ -39,7 +39,7 @@ def sobe_dados_bq(df, tabela_destino, mode):
     )
 
 ## ids playlist e channels
-ID_PLAYLIST_CAVALEIRO_DA_LUA = "PLCG86DHec6YGDUIHqtDT8IJzyCh8gJu6l"
+ID_PLAYLIST_CAVALEIRO_DA_LUA = "PL4M4DVGB6vMLl0yokT_VpX_uLAEt_yBSt"
 ID_PLAYLIST_MS_MARVEL = "PL4M4DVGB6vMLJrIH93c3K3I8lasy1DQ9o"
 ID_PLAYLIST_HAWKEYE = "PL4M4DVGB6vMLTTjA1fIZfIW-sS5TCsKW9"
 ID_PLAYLIST_DOCTOR_STRANGE = "PL4M4DVGB6vMJ7XsOssB5hLZP4LdqaFJMx"
@@ -147,55 +147,6 @@ def index():
         msg = f'youtube_api: A playlist ou canal {playlist_name} não foi encontrada'
         print(msg)
         return 'ok', 200
-
-@app.route('/teste', methods=['POST'])
-def teste():
-    json = request.get_json()
-    if not json:
-        return 'not ok', 404
-    playlist_name = json.get('msg')
-    print(playlist_name)
-    playlist_id = DEPARA_PLAYLIST.get(playlist_name)
-    print(playlist_id)
-    if playlist_id:
-        try:
-            df_videos, df_stats, df_comments = pega_tudo_playlist(id_playlist=playlist_id, playlist_name=playlist_name)
-            if df_videos.empty or df_stats.empty or df_comments.empty:
-                msg = f'youtube_api: algumas tabelas da playlist {playlist_name} estão sem dados'
-                print(msg)
-                print(msg)
-                return 'ok', 200
-            df_comments.to_gbq(
-                destination_table='youtube.video_comments',
-                credentials=credentials,
-                project_id=project_id,
-                if_exists='append')
-
-            df_videos.to_gbq(
-                destination_table='youtube.videos',
-                credentials=credentials,
-                project_id=project_id,
-                if_exists='append')
-
-            df_stats.to_gbq(
-                destination_table='youtube.video_stats',
-                credentials=credentials,
-                project_id=project_id,
-                if_exists='append')
-
-            msg = f"youtube_api: foram adicionadas as 3 tabelas da playlist {playlist_name}"
-            print(msg)
-            print(msg)
-            return 'ok', 200
-        except Exception as e:
-            msg = f"youtube_api: Ocorreu um erro nas tabelas da playlist {playlist_name}"
-            print(msg)
-            print(msg)
-            return 'ok', 200
-    else:
-        msg = f'youtube_api: playlist {playlist_name} não encontrada'
-        print(msg)
-        print(msg)
-        return 'ok', 200
+        
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port='8080')

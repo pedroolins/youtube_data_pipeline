@@ -1,0 +1,78 @@
+name: Deploy api_youtube to Cloud Run
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    name: ci/cd pipeline to deploy on cloud run
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'to deploy')"
+    steps:
+      ## fazendo o checkout do github actions
+      - uses: actions/checkout@v2
+
+      ## fazendo checkout do python
+      - uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+      ## fazendo o checkout do GCP
+      - uses: ggoogle-github-actions/setup-gcloud@v0
+        with:
+          version: "290.0.1"
+          service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+      
+      - name: instalando as libs
+        run:
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      ## utilizando o pytest    
+      - name: relaizando os testes
+        run: pytest -v
+
+      ## aqui começa a subir no GCP
+      - name: build and push image to google container registry
+        run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
+      
+      - name: deploy on cloud run
+        run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA --platform managed --region $RUN_REGION --no-allow-unauthenticated
+
+
+
+
+
+# on:
+#   push:
+#     branches:
+#       - main
+# env:
+#   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+#   APP_ID: youtubepipeline
+#   RUN_REGION: us-central1
+#   SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
+# jobs:
+#   deploy:
+#     name: Deploy to Cloud Run
+#     runs-on: ubuntu-latest
+#     if: "contains(github.event.head_commit.message, 'to deploy')"
+#     steps:
+#       - uses: actions/checkout@v2
+
+#       # Setup gcloud CLI
+#       - uses: google-github-actions/setup-gcloud@master
+#         with:
+#           version: "290.0.1"
+#           service_account_key: ${{ secrets.GCP_SA_KEY_JSON }}
+#           project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+#       # Build and push image to Google Container Registry
+#       - name: Build
+#         run: gcloud builds submit --tag gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA
+
+#       - name: Deploy
+#         run: gcloud run deploy $APP_ID --image gcr.io/$PROJECT_ID/$APP_ID:$GITHUB_SHA --platform managed --region $RUN_REGION --no-allow-unauthenticated

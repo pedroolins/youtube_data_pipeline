@@ -13,7 +13,7 @@ KEY_API = os.getenv('chave_api_youtube')
 SERVICE_NAME='youtube'
 VERSION='v3'
 ## ids playlist and channels
-ID_PLAYLIST_CAVALEIRO_DA_LUA = "PLCG86DHec6YGDUIHqtDT8IJzyCh8gJu6l"
+ID_PLAYLIST_CAVALEIRO_DA_LUA = "PL4M4DVGB6vMLl0yokT_VpX_uLAEt_yBSt"
 ID_PLAYLIST_MISS_MARVEL = "PL4M4DVGB6vMLJrIH93c3K3I8lasy1DQ9o"
 ID_PLAYLIST_GAVIAO = "PL4M4DVGB6vMLTTjA1fIZfIW-sS5TCsKW9"
 ID_PLAYLIST_DOCTOR_STRANGE = "PL4M4DVGB6vMJ7XsOssB5hLZP4LdqaFJMx"
@@ -46,7 +46,7 @@ def pega_dados_playlist(pagetoken=None, id_playlist=ID_PLAYLIST_CAVALEIRO_DA_LUA
     res = youtube.playlistItems().list(part=['snippet', 'contentDetails'], playlistId=id_playlist, maxResults=max_results, pageToken=pagetoken).execute()
     return res
 
-def pega_dados_video(id_video):
+def pega_dados_video(id_video=VIDEO_ID):
     res = youtube.videos().list(part='statistics', id=id_video, maxResults=50).execute()
     return res
 
@@ -55,7 +55,7 @@ def pega_json_comments(id_video=VIDEO_ID, max_results=50, pagetoken=None):
     return res
 
 ##pegando os dados da playlist
-def pega_dados_da_playlist(id_playlist, playlist_name):
+def pega_dados_da_playlist(id_playlist=ID_PLAYLIST_CAVALEIRO_DA_LUA, playlist_name="cavaleiro da lua"):
     playlist = []
     pagetoken = None
     while True:
@@ -89,7 +89,7 @@ def pega_dados_da_playlist(id_playlist, playlist_name):
     return df
 
 ##pega estatísticas de uma lista de vídeos 
-def pega_stats_videos(list_id_videos):
+def pega_stats_videos(list_id_videos=pd.Series([VIDEO_ID])):
     # divide em partes pra deixar mais otimizado hehehehhe
     parts_divide = (list_id_videos.shape[0] // 50) + 1
     lista_parts = np.array_split(list_id_videos, parts_divide)
@@ -147,7 +147,7 @@ def video_comments(video_id ='SecT4r0-BqE'):
     return lista_dados
 
 ## pega os comentários de uma lista de vídeos
-def pega_comments_videos(list_videos_id):
+def pega_comments_videos(list_videos_id=[VIDEO_ID]):
     comments_list = []
     for video_id in list_videos_id:
         comments_list += video_comments(video_id)
@@ -158,13 +158,13 @@ def pega_comments_videos(list_videos_id):
     return df
 
 ## retorna tanto os dados dos vídeos, como stats e comments das playlists selecionada
-def pega_tudo_playlist(id_playlist, playlist_name):
+def pega_tudo_playlist(id_playlist=ID_PLAYLIST_CAVALEIRO_DA_LUA, playlist_name="cavaleiro_da_lua"):
     tabela_videos = pega_dados_da_playlist(id_playlist, playlist_name)
     tabela_stats = pega_stats_videos(tabela_videos['video_id'])
     tabela_comments = pega_comments_videos(tabela_videos['video_id'])
     return tabela_videos, tabela_stats, tabela_comments
 
-def pega_stats_channel(id_channel, channel_name):
+def pega_stats_channel(id_channel=CHANNEL_ID_DISNEY_PLUS, channel_name="disney_plus"):
     dict_dados = pega_dados_totais(id_channel=id_channel)['items'][0]['statistics']
     dict_dados['channel_name'] = channel_name
     df = pd.DataFrame([dict_dados])

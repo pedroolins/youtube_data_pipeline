@@ -26,7 +26,7 @@ __pycache__/
 # C extensions
 *.so
 
-.github/
+
 # Distribution / packaging
 .Python
 build/
@@ -192,5 +192,5 @@ cython_debug/
 .ionide
 
 # Support for Project snippet scope
-
+*.pytest_cache/
 # End of https://www.toptal.com/developers/gitignore/api/python,data,visualstudiocode
