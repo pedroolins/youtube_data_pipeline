@@ -1,4 +1,4 @@
-name: Deploy api_youtube to GCP on Cloud Run
+name: Deploy api_youtube on Cloud Run
 
 on: 
   push:
