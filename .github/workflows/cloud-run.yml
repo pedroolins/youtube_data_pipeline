@@ -9,6 +9,7 @@ env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   APP_ID: youtube-pipeline
   RUN_REGION: us-central1
+  chave_api_youtube: ${{ secrets.CHAVE_API_YOUTUBE }}
   SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
 
 jobs:
@@ -38,7 +39,7 @@ jobs:
           pip install -r requirements.txt
 
       ## utilizando o pytest    
-      - name: relaizando os testes
+      - name: realizando os testes
         run: pytest -v
 
       ## aqui começa a subir no GCP
