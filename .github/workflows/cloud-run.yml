@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+env:
+  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  APP_ID: youtube-pipeline
+  RUN_REGION: us-central1
+  SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
+
 jobs:
   deploy:
     name: ci/cd pipeline to deploy on cloud run
