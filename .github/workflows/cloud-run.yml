@@ -7,7 +7,7 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-  APP_ID: youtube-pipeline-teste
+  APP_ID: youtube-pipeline
   RUN_REGION: us-central1
   SERVICE_ACCOUNT_EMAIL: ${{ secrets.EMAIL_SA }}
   chave_api_youtube: ${{ secrets.CHAVE_API_YOUTUBE }}
