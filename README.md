@@ -13,7 +13,7 @@
 * Foram utilizados alguns serviços do google cloud para realizar a automação da extração
   - Google Cloud Scheduler -> alarme do processo automatizado
   - Google Cloud Run -> implantação da aplicação flask
-  - Google Pubsub -> sistema de mensageria que realiza 
+  - Google Pubsub -> sistema de mensageria que realiza a entrega das mesangens ao cloud run
   - Google BigQuery -> armazenamento dos dados coletados
 <div align="center">
 <img src='https://miro.medium.com/max/1400/1*vfcEHNjLjWaG3O4OFwo-sQ.png'>
